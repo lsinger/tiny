@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 from .models import Link
 
 class ShortenerText(TestCase):
@@ -21,3 +22,11 @@ class ShortenerText(TestCase):
 		l.save()
 		exp_url = Link.expand(short_url)
 		self.assertEqual(url, exp_url)
+
+	def test_homepage(self):
+		"""
+		homepage exists and contains a form
+		"""
+		response = self.client.get(reverse("home"))
+		self.assertEqual(response.status_code, 200)
+		self.assertIn("form", response.context)
